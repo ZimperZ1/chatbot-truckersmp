@@ -18,7 +18,7 @@ It also connects to **OpenWeatherMap** for live weather and to **Groq API (LLaMA
 
 ### 1. Clone repository
 ```bash
-git clone https://github.com/YourUsername/chatbot-truckersmp.git
+git clone https://github.com/GitPolyakoff/chatbot-truckersmp.git
 ```
 ## 2. Configure API keys
 
