@@ -42,14 +42,7 @@ Insert your Groq key:
 
 Get your key here 👉 [Groq Console](https://console.groq.com/keys)
 
-## 3. Configure chat log path
-
-In `Program.cs`, change this line to your log path:
-```bash
-private static string ChatLogPath = @"C:\Users\USER\Documents\ETS2MP\logs\chat_2xxx_xx_xx_log.txt";
-```
-
-## 4. Build & Run
+## 3. Build & Run
 
 Compile the project and start the bot:
 ```bash
@@ -122,7 +115,22 @@ Bot: 📅 Events now/soon: Real Operations at 2025-09-20 | Convoy Community Even
 
 ---
 
-**📌 Notes**
+## 👥 Credits
+
+**Developers:**
+- **polyakoff** - Main developer & project creator
+- **lrnsxgod** - Contributor
+
+**GitHub Profiles:**
+- [GitPolyakoff](https://github.com/GitPolyakoff)
+- [lrnsxdev](https://github.com/lrnsxdev)
+
+**Discord:**
+- polyakoff & lrnsxgod
+
+---
+
+## 📌 Notes
 
 - Answers from GPT are short (1–2 sentences), because game chat has limited space.
 

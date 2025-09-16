@@ -26,7 +26,7 @@ namespace ChatBot
         // ----------------- CONFIG -----------------
         private const string OPENWEATHERMAP_API_KEY = "YOUR_OPENWEATHERMAP_API_KEY";
         private const string TRUCKERSMP_API_BASE = "https://api.truckersmp.com/v2";
-        private static string ChatLogPath = @"C:\Users\USER\Documents\ETS2MP\logs\chat_2025_09_15_log.txt";
+        private static string ChatLogPath = "";
         private static string[] windowTitles = new[] { "Euro Truck Simulator 2 Multiplayer", "American Truck Simulator" };
         private static readonly InputSimulator sim = new InputSimulator();
         private static int tailSleepMs = 50;
@@ -36,16 +36,169 @@ namespace ChatBot
         private static Regex chatLineRegex = new Regex(@"\[(?<channel>.+?)\]\s+\[(?<time>\d{2}:\d{2}:\d{2})\]\s+(?<nick>.+?)\s+\((?<id>\d+)\):\s+(?<message>.+)", RegexOptions.Compiled);
         // ------------------------------------------
 
+        private static string DetectChatLogPath()
+        {
+            Console.WriteLine("🔍 Searching for chat log file automatically...");
+            
+            var possiblePaths = new[]
+            {
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "ETS2MP", "logs"),
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "ATS2MP", "logs"),
+                @"C:\Users\" + Environment.UserName + @"\Documents\ETS2MP\logs",
+                @"C:\Users\" + Environment.UserName + @"\Documents\ATS2MP\logs",
+            };
+
+            foreach (var logDir in possiblePaths)
+            {
+                if (Directory.Exists(logDir))
+                {                    
+                    var today = DateTime.Now;
+                    var fileName = $"chat_{today:yyyy_MM_dd}_log.txt";
+                    var filePath = Path.Combine(logDir, fileName);
+                    
+                    if (File.Exists(filePath))
+                    {
+                        Console.WriteLine($"✅ Chat log file found: {filePath}");
+                        return filePath;
+                    }
+
+                    try
+                    {
+                        var chatFiles = Directory.GetFiles(logDir, "chat_*_log.txt")
+                            .OrderByDescending(f => File.GetLastWriteTime(f))
+                            .ToArray();
+
+                        if (chatFiles.Length > 0)
+                        {
+                            var latestFile = chatFiles[0];
+                            Console.WriteLine($"📄 Latest chat log file found: {latestFile}");
+                            return latestFile;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"⚠️ Error reading log directory: {ex.Message}");
+                    }
+                }
+            }
+
+            Console.WriteLine("❌ Chat log file not found automatically.");
+            return null;
+        }
+
+        private static string GetChatLogPathFromUser()
+        {
+            Console.WriteLine("\n📝 Chat log file not found!");
+            Console.WriteLine("Please enter the full path to your chat log file:");
+            Console.WriteLine("Example: C:\\Users\\USER\\Documents\\ETS2MP\\logs\\chat_2025_01_15_log.txt");
+            Console.Write("File path: ");
+            
+            string userPath = Console.ReadLine()?.Trim();
+            
+            if (string.IsNullOrEmpty(userPath))
+            {
+                Console.WriteLine("❌ Invalid file path!");
+                return null;
+            }
+
+            if (!File.Exists(userPath))
+            {
+                Console.WriteLine($"❌ File not found: {userPath}");
+                return null;
+            }
+
+            Console.WriteLine($"✅ Chat log file verified: {userPath}");
+            return userPath;
+        }
+
+        private static async Task<bool> CheckApiConnectivity()
+        {
+            Console.WriteLine("🔍 Checking API connectivity...");
+            
+            bool groqConnected = false;
+            bool weatherConnected = false;
+            
+            try
+            {
+                // Test Groq API
+                string testPrompt = "Hello";
+                string response = await GenerateGptResponse(testPrompt);
+                
+                if (!string.IsNullOrEmpty(response) && response != "(no response)")
+                {
+                    Console.WriteLine("✅ Groq API: Connected");
+                    groqConnected = true;
+                }
+                else
+                {
+                    Console.WriteLine("❌ Groq API: Failed to get response");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"❌ Groq API: Error - {ex.Message}");
+            }
+            
+            try
+            {
+                // Test OpenWeather API
+                var weather = await GetWeatherAsync("London");
+                
+                if (weather != null)
+                {
+                    Console.WriteLine("✅ OpenWeather API: Connected");
+                    weatherConnected = true;
+                }
+                else
+                {
+                    Console.WriteLine("❌ OpenWeather API: Failed to get response");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"❌ OpenWeather API: Error - {ex.Message}");
+            }
+
+            Console.WriteLine("--------------------------------");
+            return groqConnected || weatherConnected; // Return true if at least one API works
+        }
+
         static void Main(string[] args)
         {
             Console.OutputEncoding = Encoding.UTF8;
-            Console.WriteLine("Polyakoff chatBot starting... 🤖");
+            Console.WriteLine("🤖 Polyakoff ChatBot Starting...");
+            Console.WriteLine("--------------------------------");
+            
             // load secrets.json
             var config = new ConfigurationBuilder().AddUserSecrets<Program>().Build();
             string groqAiKey = config.GetSection("GROQ_API_KEY").Value;
             _gptClient = new GroqApiClient(groqAiKey);
 
-            Console.WriteLine($"Watching: {ChatLogPath}");
+            // Check API connectivity
+            bool apiConnected = CheckApiConnectivity().GetAwaiter().GetResult();
+            if (!apiConnected)
+            {
+                Console.WriteLine("⚠️ Warning: All API connections failed. Some features may not work.");
+            }
+
+            ChatLogPath = DetectChatLogPath();
+            
+            if (string.IsNullOrEmpty(ChatLogPath))
+            {
+                while (string.IsNullOrEmpty(ChatLogPath))
+                {
+                    ChatLogPath = GetChatLogPathFromUser();
+                    if (string.IsNullOrEmpty(ChatLogPath))
+                    {
+                        Console.WriteLine("⚠️ Press Enter to try again...");
+                        Console.ReadLine();
+                    }
+                }
+            }
+
+            Console.WriteLine("--------------------------------");
+            Console.WriteLine("✅ ChatBot Started!");
+            Console.WriteLine("📊 Monitoring chat...");
 
             Task.Factory.StartNew(() => SendWorker(), TaskCreationOptions.LongRunning);
 
@@ -163,7 +316,7 @@ namespace ChatBot
                     break;
 
                 case "!socials":
-                    EnqueueBotMessage($"@{id} 🔗 My Discord Nickname: polyakoff | Github: github.com/GitPolyakoff |");
+                    EnqueueBotMessage($"@{id} 🔗 Our discord nickname: polyakoff & lrnsxgod | Github: github.com/GitPolyakoff & github.com/lrnsxdev |");
                     break;
 
                 case "!events":
