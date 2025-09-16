@@ -542,11 +542,11 @@ namespace ChatBot
                 SetForegroundWindow(hWnd);
                 Thread.Sleep(200);
 
+                SetClipboardText(message);
+                Thread.Sleep(300);
+
                 sim.Keyboard.KeyPress(VirtualKeyCode.VK_Y);
                 Thread.Sleep(150);
-
-                SetClipboardText(message);
-                Thread.Sleep(500);
 
                 sim.Keyboard.ModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.VK_V);
                 Thread.Sleep(50);
