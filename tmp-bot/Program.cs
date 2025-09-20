@@ -336,7 +336,15 @@ namespace ChatBot
                     }
                     else
                     {
-                        string hiddenPrompt = arg + "\n\n(Answer in the language of the question, very briefly in 1 sentences.)";
+                        string hiddenPrompt = arg + "\n\n(Answer in the language of the question, very briefly in 1 sentences." +
+                            "NO profanity, swearing, or inappropriate language;" +
+                            "NO insults, threats, or discrimination;" +
+                            "NO political discussions or extreme views;" +
+                            "NO references to drugs, illegal substances, or sexual content;" +
+                            "NO N-Words;" +
+                            "NO personal information sharing;" +
+                            "Keep responses friendly, helpful, and appropriate for all ages;" +
+                            "If asked about inappropriate topics, politely decline and suggest appropriate alternatives.)";
                         string reply = await GenerateGptResponse(hiddenPrompt);
                         EnqueueBotMessage($"@{id} 🤖 GPT: {reply}");
                     }
@@ -483,7 +491,15 @@ namespace ChatBot
 
         private static async Task<string> GenerateGptResponse(string userInput)
         {
-            string hiddenInstruction = " (Respond in the same language as the question, very concise: 1 short sentences only.)";
+            string hiddenInstruction = " (Respond in the same language as the question, very concise: 1 short sentences only." +
+                "NO profanity, swearing, or inappropriate language;" +
+                "NO insults, threats, or discrimination;" +
+                "NO political discussions or extreme views;" +
+                "NO references to drugs, illegal substances, or sexual content;" +
+                "NO N-Words;" +
+                "NO personal information sharing;" +
+                "Keep responses friendly, helpful, and appropriate for all ages;" +
+                "If asked about inappropriate topics, politely decline and suggest appropriate alternatives.)";
 
             _gptHistory.Add(new JObject
             {
